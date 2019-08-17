@@ -1,0 +1,89 @@
+#include "Window.h"
+
+#include <assert.h>
+#include "OpenGL.h"
+
+#include <functional>
+
+#include <iostream>
+#define LOG(a) std::cout << (a) << std::endl
+
+
+
+SSGFX::CWindow::CWindow(unsigned Width, unsigned Height, const std::string & Name)
+{
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	WindowHandle = glfwCreateWindow(Width, Height, Name.c_str(), NULL, NULL);
+	if (!WindowHandle)
+	{
+		glfwTerminate();
+		LOG("Failed to create window.");
+	}
+	glfwMakeContextCurrent(WindowHandle);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		LOG("Failed to load GLAD.");
+	}
+
+	glfwSetWindowUserPointer(WindowHandle, this);
+
+	glfwSetFramebufferSizeCallback(WindowHandle, ResizeCallback);
+
+	glViewport(0, 0, Width, Height);
+}
+
+SSGFX::CWindow::~CWindow()
+{
+	glfwTerminate();
+}
+
+void SSGFX::CWindow::SetClearColor(const SColor& Color)
+{
+	ClearColor = Color;
+}
+
+void SSGFX::CWindow::Clear()
+{
+	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void SSGFX::CWindow::UpdateContent()
+{
+	glfwSwapBuffers(WindowHandle);
+}
+
+bool SSGFX::CWindow::Open()
+{
+	if (glfwWindowShouldClose(WindowHandle)) {
+		return false;
+	}
+	glfwPollEvents();
+	return true;
+}
+
+std::vector<SSGFX::SWindowEvent> SSGFX::CWindow::FlushEvents()
+{
+	auto events = Events;
+	Events.clear();
+	return std::move(events);
+}
+
+void SSGFX::CWindow::ResizeCallback(GLFWwindow * window, int width, int height)
+{
+	// This needs so send the event to the workerthread
+	glViewport(0, 0, width, height);
+	LOG("Resizing to " + std::to_string(width) + "x" + std::to_string(height));
+
+	CWindow* w = static_cast<CWindow*>(glfwGetWindowUserPointer(window));
+
+	SWindowEvent e;
+	e.type = EEventType::RESIZE;
+	e.x = width;
+	e.y = height;
+	w->Events.emplace_back(e);
+}
