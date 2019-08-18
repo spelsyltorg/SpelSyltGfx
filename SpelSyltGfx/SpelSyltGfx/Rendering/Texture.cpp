@@ -11,17 +11,29 @@ SSGFX::CTexture::~CTexture()
 
 void SSGFX::CTexture::Create(const STextureDesc& Description)
 {
-	int amount = Description.Width * Description.Height * sizeof(char);
-	char* pixels = new char[amount];
-	for (int i = 0; i < amount; ++i)
-	{
-		pixels[0] = Description.FillColor.r * 255;
-		pixels[1] = Description.FillColor.g * 255;
-		pixels[2] = Description.FillColor.b * 255;
-		pixels[3] = Description.FillColor.a * 255;
-	}
+	int channels;
+	if (Description.Format == RGBA)
+		channels = 4;
+	else if (Description.Format == RGB)
+		channels = 3;
+	else if (Description.Format == RG)
+		channels = 2;
+	else if (Description.Format == RED || Description.Format == DEPTH)
+		channels = 1;
 
-	char p[4] = {0,255,0,255};
+	int amount = Description.Width * Description.Height * channels;
+	char* pixels = new char[amount];
+	for (int i = 0; i < amount/channels; ++i)
+	{
+		int p = channels * i;
+		pixels[p+0] = Description.FillColor.r * 255;
+		if (channels > 1)
+			pixels[p+1] = Description.FillColor.g * 255;
+		if (channels > 2)
+			pixels[p+2] = Description.FillColor.b * 255;
+		if (channels > 3)
+			pixels[p+3] = Description.FillColor.a * 255;
+	}
 
 	glGenTextures(1, &ID);
 	glBindTexture(GL_TEXTURE_2D, ID);

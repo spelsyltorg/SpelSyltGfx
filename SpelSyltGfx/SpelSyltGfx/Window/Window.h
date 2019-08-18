@@ -27,7 +27,7 @@ namespace SSGFX
 		void Clear();
 		void UpdateContent();
 
-		bool Open();
+		bool IsOpen();
 
 		GLFWwindow* GetHandle() const { return WindowHandle; }
 		std::vector<SWindowEvent> FlushEvents();
@@ -38,6 +38,10 @@ namespace SSGFX
 		GLFWwindow* WindowHandle = nullptr;
 		SColor ClearColor;
 
-		std::vector<SWindowEvent> Events;
+		std::vector<SWindowEvent> Events1;
+		std::vector<SWindowEvent> Events2;
+
+		std::vector<SWindowEvent>* ActiveEvents;
+		std::vector<SWindowEvent>* WaitingEvents;
 	};
 }

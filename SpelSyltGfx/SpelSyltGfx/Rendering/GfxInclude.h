@@ -5,6 +5,8 @@ namespace SSGFX
 {
 	enum ETexFormat : GLenum
 	{
+		RED = GL_RED,
+		RG = GL_RG,
 		RGB = GL_RGB,
 		RGBA = GL_RGBA,
 

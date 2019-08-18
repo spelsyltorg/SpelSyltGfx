@@ -1,6 +1,9 @@
 #include "Shader.h"
 
 #include "Texture.h"
+#include <SpelSyltCommonLibrary/Graphics/Public/Transformable2D.h>
+
+#pragma comment(lib, "SpelSyltCommonLibrary_Debug")
 
 #include <iostream>
 #include <fstream>
@@ -124,5 +127,15 @@ void SSGFX::CShader::SetUniform(const std::string & Name, const CTexture & Textu
 		glUniform1i(uniformLocation, index);
 		glActiveTexture(GL_TEXTURE0 + index);
 		glBindTexture(GL_TEXTURE_2D, Texture.GetID());
+	}
+}
+
+void SSGFX::CShader::SetUniform(const std::string & Name, CL::CTransformable2D& Transform)
+{
+	int uniformLocation = glGetUniformLocation(ProgramID, Name.c_str());
+	if (uniformLocation >= 0)
+	{
+		Bind();
+		glUniformMatrix3fv(uniformLocation, 1, false, &Transform.GetMatrix().M11());
 	}
 }

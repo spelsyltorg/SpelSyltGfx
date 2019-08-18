@@ -3,6 +3,7 @@ namespace SSGFX
 {
 	enum class EEventType
 	{
+		QUIT,
 		RESIZE
 	};
 

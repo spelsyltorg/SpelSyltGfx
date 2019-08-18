@@ -5,8 +5,9 @@ uniform float Red;
 out vec4 fragColor;
 
 uniform sampler2D tex;
+in vec2 uv;
 
 void main()
 {
-	fragColor = texture2D(tex, vec2(0,0));
+	fragColor = texture2D(tex, uv);
 }

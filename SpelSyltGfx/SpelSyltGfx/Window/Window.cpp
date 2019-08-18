@@ -34,6 +34,9 @@ SSGFX::CWindow::CWindow(unsigned Width, unsigned Height, const std::string & Nam
 	glfwSetFramebufferSizeCallback(WindowHandle, ResizeCallback);
 
 	glViewport(0, 0, Width, Height);
+
+	ActiveEvents = &Events1;
+	WaitingEvents = &Events2;
 }
 
 SSGFX::CWindow::~CWindow()
@@ -57,9 +60,10 @@ void SSGFX::CWindow::UpdateContent()
 	glfwSwapBuffers(WindowHandle);
 }
 
-bool SSGFX::CWindow::Open()
+bool SSGFX::CWindow::IsOpen()
 {
 	if (glfwWindowShouldClose(WindowHandle)) {
+		ActiveEvents->emplace_back(SWindowEvent{ EEventType::QUIT });
 		return false;
 	}
 	glfwPollEvents();
@@ -68,15 +72,16 @@ bool SSGFX::CWindow::Open()
 
 std::vector<SSGFX::SWindowEvent> SSGFX::CWindow::FlushEvents()
 {
-	auto events = Events;
-	Events.clear();
+	auto events = *WaitingEvents;
+	WaitingEvents->clear();
+
+	std::swap(ActiveEvents, WaitingEvents);
+
 	return std::move(events);
 }
 
 void SSGFX::CWindow::ResizeCallback(GLFWwindow * window, int width, int height)
 {
-	// This needs so send the event to the workerthread
-	glViewport(0, 0, width, height);
 	LOG("Resizing to " + std::to_string(width) + "x" + std::to_string(height));
 
 	CWindow* w = static_cast<CWindow*>(glfwGetWindowUserPointer(window));
@@ -85,5 +90,5 @@ void SSGFX::CWindow::ResizeCallback(GLFWwindow * window, int width, int height)
 	e.type = EEventType::RESIZE;
 	e.x = width;
 	e.y = height;
-	w->Events.emplace_back(e);
+	w->ActiveEvents->emplace_back(e);
 }

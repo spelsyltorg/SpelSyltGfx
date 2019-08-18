@@ -4,6 +4,11 @@
 #include <unordered_set>
 #include <unordered_map>
 
+namespace CL
+{
+	class CTransformable2D;
+}
+
 namespace SSGFX
 {
 	class CTexture;
@@ -33,6 +38,7 @@ namespace SSGFX
 		void SetUniform(const std::string& Name, int Value);
 		void SetUniform(const std::string& Name, bool Value);
 		void SetUniform(const std::string& Name, const CTexture& Texture);
+		void SetUniform(const std::string& Name, CL::CTransformable2D& Transform);
 
 	private:
 		unsigned int ProgramID;
