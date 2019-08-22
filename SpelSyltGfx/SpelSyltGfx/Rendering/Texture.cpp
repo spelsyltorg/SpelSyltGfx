@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "OpenGL.h"
+#include "TextureLoading/PNGLoader.h"
 
 SSGFX::CTexture::CTexture()
 {
@@ -40,6 +41,22 @@ void SSGFX::CTexture::Create(const STextureDesc& Description)
 	glTexImage2D(GL_TEXTURE_2D, 0, Description.Format, Description.Width, Description.Height, 0, Description.Format, GL_UNSIGNED_BYTE, pixels);
 
 	delete pixels;
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+void SSGFX::CTexture::Load(const std::string & FileName)
+{
+	auto data = PNGLoader::LoadPNG(FileName);
+
+	glGenTextures(1, &ID);
+	glBindTexture(GL_TEXTURE_2D, ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, data.format, data.width, data.height, 0, data.format, GL_UNSIGNED_BYTE, data.pixels);
+
+	delete data.pixels;
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

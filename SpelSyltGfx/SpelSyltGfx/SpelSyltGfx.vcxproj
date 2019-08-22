@@ -166,6 +166,7 @@
     <ClInclude Include="Rendering\Shader.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\VertexBuffer.h" />
+    <ClInclude Include="TextureLoading\PNGLoader.h" />
     <ClInclude Include="Window\Window.h" />
     <ClInclude Include="Window\WindowEvent.h" />
   </ItemGroup>
@@ -176,6 +177,7 @@
     <ClCompile Include="Rendering\Shader.cpp" />
     <ClCompile Include="Rendering\Texture.cpp" />
     <ClCompile Include="Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="TextureLoading\PNGLoader.cpp" />
     <ClCompile Include="Window\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

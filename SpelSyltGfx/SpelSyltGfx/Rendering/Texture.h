@@ -1,5 +1,6 @@
 #pragma once
 #include "GfxInclude.h"
+#include <string>
 
 namespace SSGFX
 {
@@ -19,6 +20,7 @@ namespace SSGFX
 		~CTexture();
 
 		void Create(const STextureDesc& Description);
+		void Load(const std::string& FileName);
 		int GetID() const;
 
 	private:
