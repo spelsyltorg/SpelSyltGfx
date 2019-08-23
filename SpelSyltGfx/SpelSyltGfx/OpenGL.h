@@ -5,8 +5,8 @@
 #include <windows.h>
 
 #define GLFW_INCLUDE_NONE
-#include <glfw3.h>
-#include <glad.h>
+#include <SpelSyltGfx/glfw3.h>
+#include <SpelSyltGfx/glad.h>
 #include <gl/GLU.h>
 
 #ifdef _X86_

@@ -9,9 +9,9 @@
 #include <fstream>
 #include <sstream>
 
-SSGFX::CShader::CShader()
+SSGFX::CShader::CShader() :
+	ProgramID(0)
 {
-	ProgramID = glCreateProgram();
 }
 
 SSGFX::CShader::~CShader()
@@ -20,6 +20,9 @@ SSGFX::CShader::~CShader()
 
 bool SSGFX::CShader::Load(EShaderType Type, void * Data, size_t DataSize)
 {
+	if (!ProgramID)
+		ProgramID = glCreateProgram();
+
 	int type;
 	switch (Type)
 	{
@@ -34,11 +37,8 @@ bool SSGFX::CShader::Load(EShaderType Type, void * Data, size_t DataSize)
 		break;
 	}
 
-	const char* source;
-	memcpy(&source, Data, DataSize);
-
 	unsigned shader = glCreateShader(type);
-	glShaderSource(shader, 1, &source, NULL);
+	glShaderSource(shader, 1, (char**)&Data, NULL);
 	glCompileShader(shader);
 
 	int success;

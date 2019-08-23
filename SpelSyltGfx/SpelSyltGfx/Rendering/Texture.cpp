@@ -1,6 +1,6 @@
 #include "Texture.h"
-#include "OpenGL.h"
-#include "TextureLoading/PNGLoader.h"
+#include "SpelSyltGfx/OpenGL.h"
+#include "SpelSyltGfx/TextureLoading/PNGLoader.h"
 
 SSGFX::CTexture::CTexture()
 {

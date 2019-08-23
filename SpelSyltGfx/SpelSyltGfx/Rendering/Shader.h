@@ -1,5 +1,5 @@
 #pragma once
-#include "OpenGL.h"
+#include "SpelSyltGfx\OpenGL.h"
 #include <string>
 #include <unordered_set>
 #include <unordered_map>

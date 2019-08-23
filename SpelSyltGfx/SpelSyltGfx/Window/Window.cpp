@@ -1,7 +1,7 @@
 #include "Window.h"
 
 #include <assert.h>
-#include "OpenGL.h"
+#include "SpelSyltGfx/OpenGL.h"
 
 #include <functional>
 

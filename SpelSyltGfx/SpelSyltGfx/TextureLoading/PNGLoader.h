@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Rendering/GfxInclude.h"
+#include "SpelSyltGfx/Rendering/GfxInclude.h"
 
 namespace SSGFX
 {
