@@ -111,7 +111,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\External\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(ProjectDir);$(ProjectDir)..\External\Include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)..\External\Libs\</AdditionalLibraryDirectories>
@@ -143,7 +143,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\External\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(ProjectDir);$(ProjectDir)..\External\Include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -154,12 +154,17 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Font\Font.h" />
+    <ClInclude Include="Font\FontLoader.h" />
+    <ClInclude Include="Font\FreeType.h" />
+    <ClInclude Include="Font\RenderTextBuilder.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="glew.h" />
     <ClInclude Include="glfw3.h" />
     <ClInclude Include="glfw3native.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="Rendering\Bitmap.h" />
     <ClInclude Include="Rendering\GfxInclude.h" />
     <ClInclude Include="Rendering\RenderObject.h" />
     <ClInclude Include="Rendering\RenderTarget.h" />
@@ -171,7 +176,11 @@
     <ClInclude Include="Window\WindowEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Font\Font.cpp" />
+    <ClCompile Include="Font\FontLoader.cpp" />
+    <ClCompile Include="Font\RenderTextBuilder.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Rendering\Bitmap.cpp" />
     <ClCompile Include="Rendering\GfxInclude.cpp" />
     <ClCompile Include="Rendering\RenderObject.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />

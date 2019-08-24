@@ -4,6 +4,8 @@
 
 namespace SSGFX
 {
+	struct SBitmap;
+
 	class CTexture
 	{
 	public:
@@ -20,6 +22,7 @@ namespace SSGFX
 		~CTexture();
 
 		void Create(const STextureDesc& Description);
+		void Create(const SBitmap& InBitmap);
 		void Load(const std::string& FileName);
 		int GetID() const;
 

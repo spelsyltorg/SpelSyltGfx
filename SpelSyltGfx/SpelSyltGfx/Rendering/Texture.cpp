@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "OpenGL.h"
 #include "TextureLoading/PNGLoader.h"
+#include "Rendering/Bitmap.h"
 
 SSGFX::CTexture::CTexture()
 {
@@ -40,12 +41,25 @@ void SSGFX::CTexture::Create(const STextureDesc& Description)
 	glBindTexture(GL_TEXTURE_2D, ID);
 	glTexImage2D(GL_TEXTURE_2D, 0, Description.Format, Description.Width, Description.Height, 0, Description.Format, GL_UNSIGNED_BYTE, pixels);
 
-	delete pixels;
+	delete[] pixels;
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+void SSGFX::CTexture::Create(const SBitmap& InBitmap)
+{
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &ID);
+	glBindTexture(GL_TEXTURE_2D, ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, InBitmap.GetWidth(), InBitmap.GetHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, InBitmap.GetData());
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void SSGFX::CTexture::Load(const std::string & FileName)
