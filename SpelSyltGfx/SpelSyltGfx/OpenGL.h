@@ -13,6 +13,6 @@
 #pragma comment(lib, "glfw3_32.lib")
 #else
 #pragma comment(lib, "glfw3_64.lib")
-#endif
+#endif //_X86_
 #pragma comment(lib, "Opengl32.lib")
-#endif
+#endif //_WIN32
