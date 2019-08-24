@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WindowEvent.h"
-#include "Rendering/GfxInclude.h"
+#include "SpelSyltGfx/Rendering/GfxInclude.h"
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
 #pragma once
-#include "OpenGL.h"
+#include "SpelSyltGfx/OpenGL.h"
 
 namespace SSGFX
 {
