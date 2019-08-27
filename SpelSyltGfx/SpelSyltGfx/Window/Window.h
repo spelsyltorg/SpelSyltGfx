@@ -34,7 +34,14 @@ namespace SSGFX
 		std::vector<SWindowEvent> FlushEvents();
 
 	private:
+
+		void SetEventCallbacks();
+
 		static void ResizeCallback(GLFWwindow* window, int width, int height);
+		static void InputKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void MousePositionCallback(GLFWwindow* window, double x, double y);
+		static void InputMouseCallback(GLFWwindow* window, int button, int action, int mods);
+		static void ScrollWheelCallback(GLFWwindow* window, double x, double y);
 
 		GLFWwindow* WindowHandle = nullptr;
 		SRGBRenderColor ClearColor;
