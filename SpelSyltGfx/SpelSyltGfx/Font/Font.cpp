@@ -49,12 +49,15 @@ void SSGFX::CFont::SetFontSize(unsigned int InSize)
 		auto FreeTypeGlyph = FontFace->glyph;
 		auto CharBMP = FreeTypeGlyph->bitmap;
 
-		Glyph.Advance = FreeTypeGlyph->advance.x / 64;
-		Glyph.BearingX = static_cast<unsigned int>(FreeTypeGlyph->bitmap_left);
-		Glyph.BearingY = static_cast<unsigned int>(FreeTypeGlyph->bitmap_top);
+		Glyph.Advance = FreeTypeGlyph->advance.x >> 6;
+		Glyph.BearingX = static_cast<int>(FreeTypeGlyph->bitmap_left);
+		Glyph.BearingY = static_cast<int>(FreeTypeGlyph->bitmap_top);
 
 		Glyph.BMPRep.SetSize(CharBMP.width, CharBMP.rows);
 		Glyph.BMPRep.SetData(CharBMP.buffer, CharBMP.width * CharBMP.rows);
+
+		Glyph.YMax = static_cast<int>(Glyph.BearingY);
+		Glyph.YMin = static_cast<int>(Glyph.BearingY - Glyph.BMPRep.GetHeight());
 	}
 }
 

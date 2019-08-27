@@ -25,5 +25,6 @@ namespace SSGFX
 		std::string String;
 		CVertexBuffer VertexBuffer;
 		SBitmap BuiltBMP;
+		SBitmap BuiltOutlineBMP;
 	};
 }

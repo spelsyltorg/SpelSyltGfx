@@ -15,6 +15,8 @@ namespace SSGFX
 		SGlyph()
 			: BearingX(0)
 			, BearingY(0)
+			, YMax(0)
+			, YMin(0)
 			, Advance(0)
 			, BMPRep()
 		{
@@ -22,7 +24,8 @@ namespace SSGFX
 
 		SGlyph(const SGlyph&) = delete;
 
-		unsigned int BearingX, BearingY;
+		int BearingX, BearingY;
+		int YMax, YMin;
 		unsigned int Advance;
 		SBitmap BMPRep;
 	};
