@@ -44,14 +44,14 @@ SSGFX::CWindow::~CWindow()
 	glfwTerminate();
 }
 
-void SSGFX::CWindow::SetClearColor(const SColor& Color)
+void SSGFX::CWindow::SetClearColor(const SRGBColor& Color)
 {
-	ClearColor = Color;
+	ClearColor = Color.DecomposeToRenderColor();
 }
 
 void SSGFX::CWindow::Clear()
 {
-	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
+	glClearColor(ClearColor.Red, ClearColor.Green, ClearColor.Blue, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

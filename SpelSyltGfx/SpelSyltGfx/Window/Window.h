@@ -2,6 +2,7 @@
 
 #include "WindowEvent.h"
 #include "SpelSyltGfx/Rendering/GfxInclude.h"
+#include <SpelSyltGfx/Rendering/Color.h>
 
 #include <string>
 #include <vector>
@@ -23,7 +24,7 @@ namespace SSGFX
 		CWindow(unsigned Width, unsigned Height, const std::string& Name);
 		~CWindow();
 
-		void SetClearColor(const SColor& Color);
+		void SetClearColor(const SRGBColor& Color);
 		void Clear();
 		void UpdateContent();
 
@@ -36,7 +37,7 @@ namespace SSGFX
 		static void ResizeCallback(GLFWwindow* window, int width, int height);
 
 		GLFWwindow* WindowHandle = nullptr;
-		SColor ClearColor;
+		SRGBRenderColor ClearColor;
 
 		std::vector<SWindowEvent> Events1;
 		std::vector<SWindowEvent> Events2;
