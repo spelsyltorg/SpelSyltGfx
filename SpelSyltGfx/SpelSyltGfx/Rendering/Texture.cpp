@@ -13,7 +13,7 @@ SSGFX::CTexture::~CTexture()
 
 void SSGFX::CTexture::Create(const STextureDesc& Description)
 {
-	int channels;
+	int channels = 0;
 	if (Description.Format == RGBA)
 		channels = 4;
 	else if (Description.Format == RGB)
@@ -23,18 +23,23 @@ void SSGFX::CTexture::Create(const STextureDesc& Description)
 	else if (Description.Format == RED || Description.Format == DEPTH)
 		channels = 1;
 
+	if (channels < 1)
+	{
+		return;
+	}
+
 	int amount = Description.Width * Description.Height * channels;
 	char* pixels = new char[amount];
 	for (int i = 0; i < amount/channels; ++i)
 	{
 		int p = channels * i;
-		pixels[p+0] = Description.FillColor.r * 255;
+		pixels[p+0] = Description.FillColor.R();
 		if (channels > 1)
-			pixels[p+1] = Description.FillColor.g * 255;
+			pixels[p+1] = Description.FillColor.G();
 		if (channels > 2)
-			pixels[p+2] = Description.FillColor.b * 255;
+			pixels[p+2] = Description.FillColor.B();
 		if (channels > 3)
-			pixels[p+3] = Description.FillColor.a * 255;
+			pixels[p+3] = Description.FillColor.A();
 	}
 
 	glGenTextures(1, &ID);

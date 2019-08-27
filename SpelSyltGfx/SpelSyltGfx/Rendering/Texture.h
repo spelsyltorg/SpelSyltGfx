@@ -1,6 +1,8 @@
 #pragma once
 #include "GfxInclude.h"
 #include <string>
+#include <SpelSyltGfx/Rendering/Color.h>
+
 
 namespace SSGFX
 {
@@ -15,7 +17,7 @@ namespace SSGFX
 			unsigned int Width;
 			unsigned int Height;
 			ETexFormat Format = RGBA;
-			SColor FillColor;
+			SRGBAColor FillColor;
 		};
 
 		CTexture();
