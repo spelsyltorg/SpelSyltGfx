@@ -27,7 +27,7 @@ namespace SSGFX
 		CShader();
 		~CShader();
 
-		bool Load(EShaderType Type, void* Data, size_t DataSize);
+		bool Load(EShaderType Type, const char* InShaderFileData, size_t DataSize);
 		bool Load(EShaderType Type, const std::string& FilePath);
 
 		bool Link();

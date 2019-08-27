@@ -18,12 +18,12 @@ SSGFX::CShader::~CShader()
 {
 }
 
-bool SSGFX::CShader::Load(EShaderType Type, void * Data, size_t DataSize)
+bool SSGFX::CShader::Load(EShaderType Type, const char* InShaderFileData, size_t DataSize)
 {
 	if (!ProgramID)
 		ProgramID = glCreateProgram();
 
-	int type;
+	int type = -1;
 	switch (Type)
 	{
 	case EShaderType::Vertex:
@@ -37,8 +37,11 @@ bool SSGFX::CShader::Load(EShaderType Type, void * Data, size_t DataSize)
 		break;
 	}
 
+	const GLchar* DataGlPtr = reinterpret_cast<const GLchar*>(InShaderFileData);
+	const GLint* DataLenPtr = reinterpret_cast<GLint*>(&DataSize);
+
 	unsigned shader = glCreateShader(type);
-	glShaderSource(shader, 1, (char**)&Data, NULL);
+	glShaderSource(shader, 1, &DataGlPtr, DataLenPtr);
 	glCompileShader(shader);
 
 	int success;
@@ -70,7 +73,7 @@ bool SSGFX::CShader::Load(EShaderType Type, const std::string & FilePath)
 		return false;
 	}
 
-	return Load(Type, &cstr, sizeof(cstr));
+	return Load(Type, cstr, data.size());
 }
 
 bool SSGFX::CShader::Link()
