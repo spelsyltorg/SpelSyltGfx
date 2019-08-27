@@ -31,7 +31,7 @@ SSGFX::CWindow::CWindow(unsigned Width, unsigned Height, const std::string & Nam
 
 	glfwSetWindowUserPointer(WindowHandle, this);
 
-	glfwSetFramebufferSizeCallback(WindowHandle, ResizeCallback);
+	SetEventCallbacks();
 
 	glViewport(0, 0, Width, Height);
 
@@ -80,6 +80,15 @@ std::vector<SSGFX::SWindowEvent> SSGFX::CWindow::FlushEvents()
 	return std::move(events);
 }
 
+void SSGFX::CWindow::SetEventCallbacks()
+{
+	glfwSetFramebufferSizeCallback(WindowHandle, ResizeCallback);
+	glfwSetKeyCallback(WindowHandle, InputKeyCallback);
+	glfwSetCursorPosCallback(WindowHandle, MousePositionCallback);
+	glfwSetMouseButtonCallback(WindowHandle, InputMouseCallback);
+	glfwSetScrollCallback(WindowHandle, ScrollWheelCallback);
+}
+
 void SSGFX::CWindow::ResizeCallback(GLFWwindow * window, int width, int height)
 {
 	LOG("Resizing to " + std::to_string(width) + "x" + std::to_string(height));
@@ -90,5 +99,58 @@ void SSGFX::CWindow::ResizeCallback(GLFWwindow * window, int width, int height)
 	e.type = EEventType::RESIZE;
 	e.x = width;
 	e.y = height;
+	w->ActiveEvents->emplace_back(e);
+}
+
+void SSGFX::CWindow::InputKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	CWindow* w = static_cast<CWindow*>(glfwGetWindowUserPointer(window));
+
+	bool releasedOrPressed = false;
+	SWindowEvent e;
+	if (action == GLFW_PRESS) {
+		e.type = EEventType::KEY_DOWN;
+		releasedOrPressed = true;
+	}
+	else if (action == GLFW_RELEASE) {
+		e.type = EEventType::KEY_RELEASED;
+		releasedOrPressed = true;
+	}
+	e.value = key;
+
+	if (releasedOrPressed) {
+		w->ActiveEvents->emplace_back(e);
+	}
+}
+
+void SSGFX::CWindow::MousePositionCallback(GLFWwindow * window, double x, double y)
+{
+	CWindow* w = static_cast<CWindow*>(glfwGetWindowUserPointer(window));
+
+	SWindowEvent e;
+
+	e.type = EEventType::MOUSE_POS;
+	e.x = x;
+	e.y = y;
+
+	w->ActiveEvents->emplace_back(e);
+
+}
+
+void SSGFX::CWindow::InputMouseCallback(GLFWwindow * window, int button, int action, int mods)
+{
+	InputKeyCallback(window, button, 0, action, mods);
+}
+
+void SSGFX::CWindow::ScrollWheelCallback(GLFWwindow * window, double x, double y)
+{
+	CWindow* w = static_cast<CWindow*>(glfwGetWindowUserPointer(window));
+
+	SWindowEvent e;
+
+	e.type = EEventType::MOUSE_SCROLL;
+	e.x = x;
+	e.y = y;
+
 	w->ActiveEvents->emplace_back(e);
 }
