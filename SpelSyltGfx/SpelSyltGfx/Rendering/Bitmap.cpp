@@ -1,6 +1,10 @@
 #include "Rendering/Bitmap.h"
 #include <utility>
 
+#ifdef _DEBUG
+#include <cassert>
+#endif
+
 //----------------------------------------------------------------
 
 SSGFX::SBitmap::SBitmap()
@@ -63,26 +67,42 @@ void SSGFX::SBitmap::SetData(unsigned char* InData, unsigned int InDataSize)
 void SSGFX::SBitmap::Paint(unsigned int InX, unsigned int InY, bool InSet)
 {
 	const unsigned int Index = InX + InY * Width;
+
+#ifdef _DEBUG
+	assert(Index < DataByteSize && "Trying to write out of bounds!");
+#endif
+
 	Data[Index] = InSet ? 0xFF : 0x00;
 }
 
 //----------------------------------------------------------------
 
-void SSGFX::SBitmap::PaintBMP(unsigned int InXStartOffset, unsigned int InYOffset, const SBitmap& InBitmapToPaint)
+void SSGFX::SBitmap::PaintBMP(unsigned int InXStartOffset, unsigned int InYOffset, const SBitmap& InSourceBMP)
 {
-	const unsigned int MinX = InXStartOffset;
-	const unsigned int MinY = InYOffset;
-	const unsigned int MaxX = InBitmapToPaint.GetWidth() + MinX;
-	const unsigned int MaxY = InBitmapToPaint.GetHeight() + MinY;
+	const unsigned int SourceH = InSourceBMP.GetHeight();
+	const unsigned int SourceW = InSourceBMP.GetWidth();
 
-	for (unsigned int Y = MinY; Y < MaxY; ++Y)
+	for (unsigned int Y = 0; Y < SourceH; ++Y)
 	{
-		for (unsigned int X = MinX; X < MaxX; ++X)
+		for (unsigned int X = 0; X < SourceW; ++X)
 		{
-			const unsigned int Index = X + Y * Width;
-			const unsigned int IndexInPaintBMP = (X - MinX) + (Y - MinY) * InBitmapToPaint.GetWidth();
+			const unsigned int DestX = X + InXStartOffset;
+			const unsigned int DestY = Y + InYOffset;
 
-			Data[Index] |= InBitmapToPaint.Data[IndexInPaintBMP];
+			if (DestX >= Width || DestY >= Height)
+			{
+				continue;
+			}
+
+			const unsigned int SourceIndex = X + Y * SourceW;
+			const unsigned int DestIndex = DestX + DestY * Width;
+
+#ifdef _DEBUG
+			assert(DestIndex < DataByteSize && "Will write out of bounds");
+			assert(SourceIndex < InSourceBMP.DataByteSize && "Will read out of bounds");
+#endif
+
+			Data[DestIndex] |= InSourceBMP.Data[SourceIndex];
 		}
 	}
 }
