@@ -26,13 +26,5 @@ namespace SSGFX
 		LineLoop = GL_LINE_LOOP,
 	};
 
-	struct SColor
-	{
-		float r = 0.f;
-		float g = 0.f;
-		float b = 0.f;
-		float a = 0.f;
-	};
-
 	static void SetScreenAsRenderTarget();
 }
